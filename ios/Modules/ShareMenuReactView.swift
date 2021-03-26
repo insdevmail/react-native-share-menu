@@ -126,8 +126,12 @@ public class ShareMenuReactView: NSObject {
         } else if (imageProvider != nil) {
             imageProvider.loadItem(forTypeIdentifier: kUTTypeImage as String, options: nil) { (item, error) in
                 let url: URL! = item as? URL
-
-                callback(url.absoluteString, self.extractMimeType(from: url), nil)
+                
+                if (url == nil) {
+                    callback(nil, nil, NSException(name: NSExceptionName(rawValue: "Error"), reason:"couldn't find provider", userInfo:nil))
+                } else {
+                    callback(url.absoluteString, self.extractMimeType(from: url), nil)
+                }
             }
         } else if (textProvider != nil) {
             textProvider.loadItem(forTypeIdentifier: kUTTypeText as String, options: nil) { (item, error) in
